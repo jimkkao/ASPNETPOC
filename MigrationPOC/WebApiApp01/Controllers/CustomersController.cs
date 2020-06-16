@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.Extensibility;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -16,6 +18,14 @@ namespace WebApiApp01.Controllers
     {
         private ServerlessPOCEntities db = new ServerlessPOCEntities();
 
+        private TelemetryClient _telemetryClient;
+
+        public CustomersController()
+        {
+            _telemetryClient = new TelemetryClient();
+            _telemetryClient.TrackTrace("CustomerController started");
+        }
+
         // GET: api/Customers
         public IQueryable<Customer> GetCustomers()
         {
@@ -26,6 +36,8 @@ namespace WebApiApp01.Controllers
         [ResponseType(typeof(Customer))]
         public IHttpActionResult GetCustomer(Guid id)
         {
+            _telemetryClient.TrackTrace($"Customer Id: {id}");
+
             Customer customer = db.Customers.Where( x=>x.CustomerId==id).FirstOrDefault();
             //customer = db.Customers.FirstOrDefault<Customer>();
             if (customer == null)
