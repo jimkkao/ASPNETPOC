@@ -12,6 +12,9 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using WebApiApp01;
 
+using SharedCacheContract;
+using System.Threading.Tasks;
+
 namespace WebApiApp01.Controllers
 {
     public class CustomersController : ApiController
@@ -19,9 +22,19 @@ namespace WebApiApp01.Controllers
         private ServerlessPOCEntities db = new ServerlessPOCEntities();
 
         private TelemetryClient _telemetryClient;
+        private ISharedCache _sharedCache;
 
         public CustomersController()
         {
+            _sharedCache = new RedisSharedCache.SharedCache();
+
+            _telemetryClient = new TelemetryClient();
+            _telemetryClient.TrackTrace("CustomerController started");
+        }
+        public CustomersController(ISharedCache sharedCache )
+        {
+            _sharedCache = sharedCache;
+
             _telemetryClient = new TelemetryClient();
             _telemetryClient.TrackTrace("CustomerController started");
         }
@@ -34,15 +47,28 @@ namespace WebApiApp01.Controllers
 
         // GET: api/Customers/5
         [ResponseType(typeof(Customer))]
-        public IHttpActionResult GetCustomer(Guid id)
+        public async Task<IHttpActionResult> GetCustomer(Guid id)
         {
             _telemetryClient.TrackTrace($"Customer Id: {id}");
 
-            Customer customer = db.Customers.Where( x=>x.CustomerId==id).FirstOrDefault();
-            //customer = db.Customers.FirstOrDefault<Customer>();
+            Customer customer = await _sharedCache.GetItemAsync<Customer>(id.ToString());
+
             if (customer == null)
             {
-                return NotFound();
+                _telemetryClient.TrackTrace($"Customer Id: {id} is not in cache, get it from db.");
+
+                customer = db.Customers.Where(x => x.CustomerId == id).FirstOrDefault();
+                //customer = db.Customers.FirstOrDefault<Customer>();
+                if (customer == null)
+                {
+                    return NotFound();
+                }
+
+                await _sharedCache.SetItemAsync<Customer>(id.ToString(), customer);
+            }
+            else
+            {
+                _telemetryClient.TrackTrace($"Customer Id: {id} is in cache, return from cache");
             }
 
             return Ok(customer);
