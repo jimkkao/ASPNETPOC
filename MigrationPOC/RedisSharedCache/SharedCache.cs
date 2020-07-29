@@ -12,32 +12,6 @@ using Newtonsoft.Json;
 
 namespace RedisSharedCache
 {
-    public enum CacheItemPolicy
-    {
-        None = 0,
-        SlidingExpiration,
-        AbsoluteExpiration
-    }
-    class CachedItem
-    {
-        public string CacheKey { get; set; }
-        public string Item { get; set; }
-
-        public CacheItemPolicy Policy { get; set; }
-
-        public TimeSpan Expiration { get; set; }
-
-        public CachedItem(string key, string item, TimeSpan expiration, CacheItemPolicy policy = CacheItemPolicy.SlidingExpiration)
-        {
-            CacheKey = key;
-
-            Item = item;
-
-            Expiration = expiration;
-
-            Policy = policy;
-        }
-    }
     public static class Helper
     {
 

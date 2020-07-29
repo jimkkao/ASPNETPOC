@@ -31,13 +31,7 @@ namespace WebApiApp01.Controllers
             _telemetryClient = new TelemetryClient();
             _telemetryClient.TrackTrace("CustomerController started");
         }
-        public CustomersController(ISharedCache sharedCache )
-        {
-            _sharedCache = sharedCache;
-
-            _telemetryClient = new TelemetryClient();
-            _telemetryClient.TrackTrace("CustomerController started");
-        }
+   
 
         // GET: api/Customers
         public IQueryable<Customer> GetCustomers()
