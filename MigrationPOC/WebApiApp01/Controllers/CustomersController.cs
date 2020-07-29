@@ -45,8 +45,16 @@ namespace WebApiApp01.Controllers
         {
             _telemetryClient.TrackTrace($"Customer Id: {id}");
 
-            Customer customer = await _sharedCache.GetItemAsync<Customer>(id.ToString());
-
+            Customer customer = null;
+            try
+            {
+                customer = await _sharedCache.GetItemAsync<Customer>(id.ToString());
+            }
+            catch( Exception e)
+            {
+                _telemetryClient.TrackTrace($"Failed to get customer from Cache: {id}, error:{e.Message}");
+                _telemetryClient.TrackException(e);
+            }
             if (customer == null)
             {
                 _telemetryClient.TrackTrace($"Customer Id: {id} is not in cache, get it from db.");
@@ -57,8 +65,16 @@ namespace WebApiApp01.Controllers
                 {
                     return NotFound();
                 }
+                try
+                {
 
-                await _sharedCache.SetItemAsync<Customer>(id.ToString(), customer);
+                    await _sharedCache.SetItemAsync<Customer>(id.ToString(), customer);
+                }
+                catch( Exception e)
+                {
+                    _telemetryClient.TrackTrace($"Failed to add customer to cache: {id}, error:{e.Message}");
+                    _telemetryClient.TrackException(e);
+                }
             }
             else
             {
