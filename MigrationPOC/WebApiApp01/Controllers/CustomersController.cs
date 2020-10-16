@@ -14,6 +14,7 @@ using WebApiApp01;
 
 using SharedCacheContract;
 using System.Threading.Tasks;
+using log4net;
 
 namespace WebApiApp01.Controllers
 {
@@ -23,6 +24,7 @@ namespace WebApiApp01.Controllers
 
         private TelemetryClient _telemetryClient;
         private ISharedCache _sharedCache;
+        private ILog _logger;
 
         public CustomersController()
         {
@@ -30,6 +32,8 @@ namespace WebApiApp01.Controllers
 
             _telemetryClient = new TelemetryClient();
             _telemetryClient.TrackTrace("CustomerController started");
+
+            _logger = LogManager.GetLogger("webapi");
         }
    
 
@@ -45,6 +49,8 @@ namespace WebApiApp01.Controllers
         {
             _telemetryClient.TrackTrace($"Customer Id: {id}");
 
+            _logger.Info($"log4net logger Customer id: {id}");
+            _logger.Error($"log4net test error message, customer id: {id}");
             Customer customer = null;
             try
             {
@@ -81,6 +87,7 @@ namespace WebApiApp01.Controllers
                 _telemetryClient.TrackTrace($"Customer Id: {id} is in cache, return from cache");
             }
 
+            LogManager.Flush(1000);
             return Ok(customer);
         }
 

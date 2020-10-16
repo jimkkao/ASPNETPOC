@@ -27,12 +27,15 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "WebForm", "WebForm\", "{216
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "4157"
+		SlnRelativePath = "WebForm\"
 		DefaultWebSiteLanguage = "Visual C#"
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedCacheContract", "SharedCacheContract\SharedCacheContract.csproj", "{37C861BA-D932-4195-8DFD-04B4966E2EF7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedisSharedCache", "RedisSharedCache\RedisSharedCache.csproj", "{992D68F5-5316-4851-88BF-23AFA1AF85E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyVaultHelper", "KeyVaultHelper\KeyVaultHelper.csproj", "{F5A6EE8D-2866-4C18-ABE8-25E5520C648F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -64,6 +67,10 @@ Global
 		{992D68F5-5316-4851-88BF-23AFA1AF85E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{992D68F5-5316-4851-88BF-23AFA1AF85E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{992D68F5-5316-4851-88BF-23AFA1AF85E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5A6EE8D-2866-4C18-ABE8-25E5520C648F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5A6EE8D-2866-4C18-ABE8-25E5520C648F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5A6EE8D-2866-4C18-ABE8-25E5520C648F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5A6EE8D-2866-4C18-ABE8-25E5520C648F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

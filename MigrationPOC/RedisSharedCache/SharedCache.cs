@@ -18,7 +18,7 @@ namespace RedisSharedCache
 
         private static Lazy<ConnectionMultiplexer> lazyConnection = new Lazy<ConnectionMultiplexer>(() =>
         {
-            return ConnectionMultiplexer.Connect(ConfigurationManager.AppSettings["RedisCacheName"] + ",abortConnect=false,ssl=true,password=" + ConfigurationManager.AppSettings["RedisCachePassword"]);
+            return ConnectionMultiplexer.Connect(GetRedisCacheName() + ",abortConnect=false,ssl=true,password=" + GetRedisPasswordName());
         });
 
         public static ConnectionMultiplexer Connection
@@ -27,6 +27,29 @@ namespace RedisSharedCache
             {
                 return lazyConnection.Value;
             }
+        }
+
+        public static string GetRedisCacheName()
+        {
+            var cacheName = Environment.GetEnvironmentVariable("RedisCacheName");
+
+            if( string.IsNullOrEmpty(cacheName))
+            {
+                cacheName = ConfigurationManager.AppSettings["RedisCacheName"];
+            }
+
+            return cacheName;
+        }
+
+        public static string GetRedisPasswordName()
+        {
+            var rcPwd = Environment.GetEnvironmentVariable("RedisCachePassword");
+
+            if( string.IsNullOrEmpty(rcPwd) )
+            {
+                rcPwd = ConfigurationManager.AppSettings["RedisCachePassword"];
+            }
+            return rcPwd;
         }
     }
 
