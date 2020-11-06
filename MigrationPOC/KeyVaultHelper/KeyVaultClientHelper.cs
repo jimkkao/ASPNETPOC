@@ -66,8 +66,6 @@ namespace KeyVaultHelper
 
         protected KeyVaultClient CreateKVClient(string clientId, string clientSecret)
         {
-            //string clientId = Environment.GetEnvironmentVariable("akvClientId");
-            //string clientSecret = Environment.GetEnvironmentVariable("akvClientSecret");
 
             KeyVaultClient kvClient = new KeyVaultClient(async (authority, resource, scope) =>
             {

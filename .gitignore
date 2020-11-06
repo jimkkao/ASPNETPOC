@@ -349,3 +349,5 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 /MigrationPOC/TestConsoleApp
+/MigrationPOC/WebApiApp01/Properties/ServiceDependencies/WebApiAppNET01 - Web Deploy
+/MigrationPOC/WebApp01/Properties/ServiceDependencies/WebSiteASPNET01 - Web Deploy

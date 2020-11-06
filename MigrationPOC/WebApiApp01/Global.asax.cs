@@ -34,8 +34,9 @@ namespace WebApiApp01
         protected XmlDocument UpdateLog4NetConfig(string connStr)
         { 
             XmlDocument doc = new XmlDocument();
-
-            doc.Load(@"C:\github\ASPNETPOC\ASPNETPOC\MigrationPOC\WebApiApp01\log4net.config");
+            string configSetting = ConfigurationManager.AppSettings["logConfigFile"];
+            string configFile = Server.MapPath(configSetting);
+            doc.Load(configFile);
             var node = doc.DocumentElement.SelectSingleNode("/log4net/appender[@name='AzureBlobAppender']/param[@name='ConnectionString']");
 
             node.Attributes["value"].Value = connStr;
@@ -49,31 +50,8 @@ namespace WebApiApp01
 
             var doc = UpdateLog4NetConfig(connStr);
 
-            log4net.Config.XmlConfigurator.Configure(doc.DocumentElement);  //new FileInfo(@"C:\github\ASPNETPOC\ASPNETPOC\MigrationPOC\WebApiApp01\log4net.config"));
-            //log4net.Config.
-          
-            log4net.Repository.ILoggerRepository repository = log4net.LogManager.GetRepository();
-
-            var appenderList = repository.GetAppenders();
-
-            
-            
-            foreach (log4net.Appender.IAppender appender in repository.GetAppenders())
-            {
-                if (appender.Name.CompareTo("AzureBlobAppender") == 0 && appender is log4net.Appender.AzureBlobAppender)
-                {
-                    log4net.Appender.AzureBlobAppender blobAppender = (log4net.Appender.AzureBlobAppender)appender;
-
-                    connStr = GetConnectionStr();
-
-                    if(! string.IsNullOrEmpty(connStr))
-                    {
-                        blobAppender.ConnectionString = connStr;
-                    }
-                            //fileAppender.ActivateOptions();
-                }
-
-            }
+              log4net.Config.XmlConfigurator.Configure(doc.DocumentElement);  
+            //log4net.Config.XmlConfigurator.Configure();
         }
 
         protected string GetKeyVaultUrl()
